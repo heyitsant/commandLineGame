@@ -15,19 +15,25 @@ class Dice():
             self.current_value = random.randint(1, 6)
         else:
             self.current_value = self.current_value
+            self.held = False
         return self.current_value
+    
+    def hold_dice(self):
+        self.held = True
         
+class Player():
+    def __init__(self, name):
+        self.name = name
+        self.top_score = 0
+        self.bottom_score = 0
+        self.total_score = self.top_score + self.bottom_score
+        self.scores_used = []
+        self.rolls_this_turn = 0
+    
+                
         
 dice1 = Dice(1)
 dice2 = Dice(2)
 dice3 = Dice(3)
 dice4 = Dice(4)
 dice5 = Dice(5)
-
-print("Dice 1: " +str(dice1.roll_dice()))
-print("Dice 2: " +str(dice2.roll_dice()))
-print("Dice 3: " +str(dice3.roll_dice()))
-print("Dice 4: " +str(dice4.roll_dice()))
-print("Dice 5: " +str(dice5.roll_dice()))
-print("")
-print(dice5.current_value)
