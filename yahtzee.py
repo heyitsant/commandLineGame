@@ -26,9 +26,9 @@ class Dice():
 class Player():
     def __init__(self, name):
         self.name = name
-        self.top_score = 0
-        self.bottom_score = 0
-        self.total_score = self.top_score + self.bottom_score
+        self.upper_score = 0
+        self.lower_score = 0
+        self.total_score = self.upper_score + self.lower_score
         self.scores_used = []
         self.rolls_this_turn = 0
         self.score_sheet = [["Upper Section", {"Aces (Ones): ": 0}],["Lower Section", {"3 of a kind: ": 0}]]
