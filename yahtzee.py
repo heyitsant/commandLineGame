@@ -21,6 +21,8 @@ class Dice():
     def hold_dice(self):
         self.held = True
         
+        
+        
 class Player():
     def __init__(self, name):
         self.name = name
@@ -29,6 +31,7 @@ class Player():
         self.total_score = self.top_score + self.bottom_score
         self.scores_used = []
         self.rolls_this_turn = 0
+        self.score_sheet = [["Upper Section", {"Aces (Ones): ": 0}],["Lower Section", {"3 of a kind: ": 0}]]
     
                 
         
@@ -37,3 +40,8 @@ dice2 = Dice(2)
 dice3 = Dice(3)
 dice4 = Dice(4)
 dice5 = Dice(5)
+
+player1 = Player("Antony")
+
+print(player1.name)
+print(player1.score_sheet)
