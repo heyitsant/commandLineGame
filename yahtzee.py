@@ -1,11 +1,13 @@
 import random
+from os import system
 
 class Dice():
     def __init__(self, id):
         # the dice object will receive it's ID when it is initiated.
         # it will have a default value of -1 to indicate it hasn't been rolled
         # it will also not be 'held' by default.
-        
+        # If a dice is 'held' then it won't be rolled.
+                
         self.id = id
         self.current_value = -1
         self.held = False
@@ -32,31 +34,70 @@ class Player():
         self.scores_used = []
         self.rolls_this_turn = 0
         self.score_sheet = [["Upper Section", {"Aces (Ones): ": 0}],["Lower Section", {"3 of a kind: ": 0}]]
-        self.dice = [Dice(1), Dice(2), Dice(3), Dice(4), Dice(5)]    
+        self.dice = [Dice(1), Dice(2), Dice(3), Dice(4), Dice(5)]  
+        self.last_roll = []  
     
-    def roll_dice(self):
-        self.dice[0].roll()
-        self.dice[1].roll()
-        self.dice[2].roll()
-        self.dice[3].roll()
-        self.dice[4].roll()
-                
+    def roll_dice(self): 
+        for dice in self.dice:
+            self.last_roll.append(dice.roll())
+
+        return self.last_roll
+
+    def hold_dice(self, values_to_hold):
+        index = 0
+        held_dice = []
+        for value in values_to_hold:
+            for score in range(index, len(self.last_roll) + 1):
+                if int(value) == self.last_roll[score]:
+                    print(self.last_roll[score])
+                    self.dice[index].hold_dice()
+                    held_dice.append(index + 1)
+                    index += 1
+                    break
+                else:
+                    index += 1
+        print(f"You held the following dice {held_dice}")
+
+
+
+def clear_screen():
+    _ = system('cls')
         
 
 
 player1 = Player("Antony")
 player2 = Player("James")
 
-player1.roll_dice()
-print(f"{player1.name} rolled {player1.dice[0].current_value}, {player1.dice[1].current_value}, {player1.dice[2].current_value}, {player1.dice[3].current_value}, {player1.dice[4].current_value}")
+
+# print(f"First roll: {player1.roll_dice()}")
+# print("Holding dice 1 and 3.")
+# player1.dice[0].hold_dice()
+# player1.dice[2].hold_dice()
+# print(f"Second roll: {player1.roll_dice()}")
 
 
-player2.roll_dice()
-print(f"{player2.name} rolled {player2.dice[0].current_value}, {player2.dice[1].current_value}, {player2.dice[2].current_value}, {player2.dice[3].current_value}, {player2.dice[4].current_value}")
 
-#if player1.dice[0].current_value > player2.dice[0].current_value:
-#    print(f"{player1.name} rolled higher than {player2.name}.")
-#elif player1.dice[0].current_value == player2.dice[0].current_value:
-#    print(f"{player1.name} and {player2.name} rolled the same, what are the chances?")
-#else:
-#    print(f"{player2.name} rolled higher than {player1.name}.")
+# Need to do: Add a dictionary for possible scores.
+# Add a scoring method to update the scores dictionary.
+
+
+def round(player):
+    clear_screen()
+    print(f"{player.name}, it's your turn. Your current score (not including any bonuses) is {player.total_score} points.")
+    input("Press enter to roll your dice.")
+    print(f"You rolled: {player.roll_dice()}")
+    roll_or_score = input("Would you like to\n1: Roll again \n2: Score your dice\n")
+
+    if roll_or_score == "1":
+        hold = input("Would you like to hold any of your dice?\nY or N: ")
+        if hold.lower() == "y":
+            values = input("Please enter to values of any dice that you would like to hold.\nEnter your choice with no spaces: ")
+            value_list = []
+            for i in values:
+                value_list.append(i)
+            player.hold_dice(value_list)
+
+
+
+
+round(player1)
